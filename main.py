@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 
 @dp.message_handler(commands=["send"])
 async def pars(msg: types.Message):
-    await bot.send_message(chat_id, "@" + msg.from_user.username + ": " + msg.text[6:])
+    await bot.send_message(chat_id, "@" + msg.from_user.username + ": " + msg.text[6:] + '\n')
 
     @dp.message_handler(commands=["back"])
     async def pars1(msg1: types.Message):

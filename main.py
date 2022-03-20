@@ -21,11 +21,14 @@ logging.basicConfig(level=logging.INFO)
 async def pars(msg: types.Message):
     await bot.send_message(chat_id, "@" + msg.from_user.username + ": " + msg.text[6:])
 
+    @dp.message_handler(commands=["back"])
+    async def pars1(msg1: types.Message):
+        await bot.send_message(msg.from_user.id, "Admin" + ": " + msg1.text[6:])
 
 
-@dp.message_handler()
-async def pars(msg: types.Message):
-    await msg.answer(msg.text)
+#@dp.message_handler()
+#async def pars(msg: types.Message):
+#    await msg.answer(msg.text)
 
 
 if __name__ == "__main__":

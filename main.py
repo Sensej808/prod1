@@ -22,5 +22,11 @@ async def pars(msg: types.Message):
     await bot.send_message(chat_id, "@" + msg.from_user.username + ": " + msg.text[6:])
 
 
+
+@dp.message_handler()
+async def pars(msg: types.Message):
+    await msg.answer(msg.text)
+
+
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)

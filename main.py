@@ -9,18 +9,18 @@ if not bot_token:
     exit("Error: no token provided")
 
 bot = Bot(token=bot_token)
-# Диспетчер для бота
+
 dp = Dispatcher(bot)
-# Включаем логирование, чтобы не пропустить важные сообщения
+
+chat_id = 463785826
+
 logging.basicConfig(level=logging.INFO)
 
 
-# Хэндлер на команду /test1
-@dp.message_handler()
-async def cmd_test1(message: types.Message):
-    await message.answer(message.text)
+@dp.message_handler(commands=["send"])
+async def pars(msg: types.Message):
+    await bot.send_message(chat_id, "@" + msg.from_user.username + ": " + msg.text[6:])
 
 
 if __name__ == "__main__":
-    # Запуск бота
     executor.start_polling(dp, skip_updates=True)

@@ -17,4 +17,4 @@ async def cmd_test1(message: types.Message):
 
 if __name__ == "__main__":
     # Запуск бота
-    executor.start_polling(dp, skip_updates=True)
+    executor.start_polling(dp, skip_updates=True11)

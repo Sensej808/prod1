@@ -2,7 +2,7 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 
 # Объект бота
-bot = Bot(token="12345678:AaBbCcDdEeFfGgHh")
+bot = Bot(token="5193399323:AAH5YHcvCWBHJSNFTeYhRuAuFpz2iyHn7uY")
 # Диспетчер для бота
 dp = Dispatcher(bot)
 # Включаем логирование, чтобы не пропустить важные сообщения

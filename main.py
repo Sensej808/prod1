@@ -17,7 +17,13 @@ chat_id = 457140523  # 463785826
 logging.basicConfig(level=logging.INFO)
 
 
-async def Chat(Id_admin)
+async def Chat(Id_admin, id_user):
+    @dp.message_handler()
+    async def pars(msg: types.Message):
+        if msg.from_user.id == id_user:
+            await msg.bot.send_message(Id_admin, msg.text)
+        else:
+            await msg.bot.send_message(id_user, msg.text)
 
 
 

@@ -5,28 +5,28 @@ from os import getenv
 from sys import exit
 from tokensuka import *
 
-
 bot = Bot(token=bot_token)
 userid = 0
+ban = 0
 dp = Dispatcher(bot)
 chat_id = 463785826  # 457140523
 logging.basicConfig(level=logging.INFO)
 
 
 async def chat(userid):
-    exit = 0
-    if exit == 1:
-        return 0
     @dp.message_handler()
     async def chat1(msg2: types.Message):
+        global ban
         if msg2.text == "stop":
-            exit = 1
+            ban = 1
             return 0
         if msg2.from_user.id == chat_id:
             await bot.send_message(userid, "Admin" + ": " + msg2.text)
         else:
             await bot.send_message(chat_id, "User" + ": " + msg2.text)
-11
+        if ban == 1:
+            return 0
+
 
 @dp.message_handler(commands=["start"])
 async def pars(msg: types.Message):

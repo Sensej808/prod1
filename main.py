@@ -18,7 +18,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def chat(userid):
-    #@dp.message_handler(quit(), commands=["exit"])
     @dp.message_handler()
     async def chat1(msg2: types.Message):
         if msg2.from_user.id == chat_id:

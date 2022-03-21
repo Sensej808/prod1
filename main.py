@@ -5,27 +5,27 @@ from os import getenv
 from sys import exit
 from tokensuka import *
 
-exit = False
 
 bot = Bot(token=bot_token)
-
+userid = 0
 dp = Dispatcher(bot)
 chat_id = 463785826  # 457140523
 logging.basicConfig(level=logging.INFO)
 
 
 async def chat(userid):
+    exit = 0
+    if exit == 1:
+        return 0
     @dp.message_handler()
     async def chat1(msg2: types.Message):
+        if msg2.text == "stop":
+            exit = 1
+            return 0
         if msg2.from_user.id == chat_id:
             await bot.send_message(userid, "Admin" + ": " + msg2.text)
         else:
             await bot.send_message(chat_id, "User" + ": " + msg2.text)
-        if msg2.text == "stop":
-            exit = True
-            return 0
-    if exit == True:
-        return 0
 
 
 @dp.message_handler(commands=["start"])
@@ -40,8 +40,9 @@ async def pars(msg: types.Message):
 
     @dp.message_handler(commands=["back"])
     async def pars1(msg1: types.Message):
+        userid = msg.from_user.id
         await bot.send_message(userid, "Admin" + ": " + msg1.text[6:])
-        await chat(msg.from_user.id)
+        await chat(userid)
 
 
 # @dp.message_handler()
@@ -51,4 +52,3 @@ async def pars(msg: types.Message):
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
-

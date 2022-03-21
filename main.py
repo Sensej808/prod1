@@ -12,13 +12,22 @@ bot = Bot(token=bot_token)
 
 dp = Dispatcher(bot)
 
-chat_id = 457140523  # 463785826
+chat_id = 463785826  # 457140523
 
 logging.basicConfig(level=logging.INFO)
 
 
-async def Chat(Id_admin)
+async def chat(userid):
+    @dp.message_handler()
+    async def chat1(msg2: types.Message):
+        if msg2.from_user.id == chat_id:
+            await bot.send_message(userid, "Admin" + ": " + msg2.text)
+        else:
+            await bot.send_message(chat_id, "Admin" + ": " + msg2.text)
 
+        @dp.message_handler(commands=["exit"])
+
+        async def exit(msg: types.Message):
 
 
 @dp.message_handler(commands=["start"])
@@ -30,16 +39,17 @@ async def pars(msg: types.Message):
 @dp.message_handler(commands=["send"])
 async def pars(msg: types.Message):
     await bot.send_message(chat_id, "@" + msg.from_user.username + ": " + msg.text[6:] + '\n')
+    userid = msg.from_user.id
 
     @dp.message_handler(commands=["back"])
     async def pars1(msg1: types.Message):
         await bot.send_message(msg.from_user.id, "Admin" + ": " + msg1.text[6:])
-        await Chat(msg1.from_user.id)
+        chat(userid)
 
 
-@dp.message_handler()
-async def pars(msg: types.Message):
-    await msg.answer(msg.text)
+# @dp.message_handler()
+# async def pars(msg: types.Message):
+#    await msg.answer(msg.text)
 
 
 if __name__ == "__main__":

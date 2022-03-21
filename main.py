@@ -13,17 +13,20 @@ bot = Bot(token=bot_token)
 dp = Dispatcher(bot)
 userid = 0
 chat_id = 463785826  # 457140523
-exit = 0
+exit = ""
 logging.basicConfig(level=logging.INFO)
 
 
 async def chat(userid):
     @dp.message_handler()
     async def chat1(msg2: types.Message):
+        exit = msg2.text
         if msg2.from_user.id == chat_id:
             await bot.send_message(userid, "Admin" + ": " + msg2.text)
         else:
             await bot.send_message(chat_id, "User" + ": " + msg2.text)
+    if exit == "stop":
+        return 0
 
 
 @dp.message_handler(commands=["start"])

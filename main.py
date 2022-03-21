@@ -3,30 +3,23 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 from os import getenv
 from sys import exit
+from tokensuka import *
 
-bot_token = getenv("BOT_TOKEN")
-if not bot_token:
-    exit("Error: no token provided")
 
 bot = Bot(token=bot_token)
 
 dp = Dispatcher(bot)
-userid = 0
 chat_id = 463785826  # 457140523
-exit = ""
 logging.basicConfig(level=logging.INFO)
 
 
 async def chat(userid):
     @dp.message_handler()
     async def chat1(msg2: types.Message):
-        exit = msg2.text
         if msg2.from_user.id == chat_id:
             await bot.send_message(userid, "Admin" + ": " + msg2.text)
         else:
             await bot.send_message(chat_id, "User" + ": " + msg2.text)
-    if exit == "stop":
-        return 0
 
 
 @dp.message_handler(commands=["start"])

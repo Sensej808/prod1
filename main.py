@@ -17,6 +17,10 @@ chat_id = 457140523  # 463785826
 logging.basicConfig(level=logging.INFO)
 
 
+async def Chat(Id_admin)
+
+
+
 @dp.message_handler(commands=["start"])
 async def pars(msg: types.Message):
     await msg.delete()
@@ -30,11 +34,12 @@ async def pars(msg: types.Message):
     @dp.message_handler(commands=["back"])
     async def pars1(msg1: types.Message):
         await bot.send_message(msg.from_user.id, "Admin" + ": " + msg1.text[6:])
+        await Chat(msg1.from_user.id)
 
 
-# @dp.message_handler()
-# async def pars(msg: types.Message):
-#    await msg.answer(msg.text)
+@dp.message_handler()
+async def pars(msg: types.Message):
+    await msg.answer(msg.text)
 
 
 if __name__ == "__main__":

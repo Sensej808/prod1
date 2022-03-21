@@ -11,23 +11,20 @@ if not bot_token:
 bot = Bot(token=bot_token)
 
 dp = Dispatcher(bot)
-
+userid = 0
 chat_id = 463785826  # 457140523
-
+exit = 0
 logging.basicConfig(level=logging.INFO)
 
 
 async def chat(userid):
+    #@dp.message_handler(quit(), commands=["exit"])
     @dp.message_handler()
     async def chat1(msg2: types.Message):
         if msg2.from_user.id == chat_id:
             await bot.send_message(userid, "Admin" + ": " + msg2.text)
         else:
-            await bot.send_message(chat_id, "Admin" + ": " + msg2.text)
-
-        @dp.message_handler(commands=["exit"])
-
-        async def exit(msg: types.Message):
+            await bot.send_message(chat_id, "User" + ": " + msg2.text)
 
 
 @dp.message_handler(commands=["start"])
@@ -43,8 +40,8 @@ async def pars(msg: types.Message):
 
     @dp.message_handler(commands=["back"])
     async def pars1(msg1: types.Message):
-        await bot.send_message(msg.from_user.id, "Admin" + ": " + msg1.text[6:])
-        chat(userid)
+        await bot.send_message(userid, "Admin" + ": " + msg1.text[6:])
+        await chat(userid)
 
 
 # @dp.message_handler()

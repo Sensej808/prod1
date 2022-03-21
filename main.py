@@ -12,9 +12,15 @@ bot = Bot(token=bot_token)
 
 dp = Dispatcher(bot)
 
-chat_id = 463785826
+chat_id = 457140523  # 463785826
 
 logging.basicConfig(level=logging.INFO)
+
+
+@dp.message_handler(commands=["start"])
+async def pars(msg: types.Message):
+    await msg.delete()
+    await bot.send_message(msg.from_user.id, "Добро пожаловать")
 
 
 @dp.message_handler(commands=["send"])
@@ -26,8 +32,8 @@ async def pars(msg: types.Message):
         await bot.send_message(msg.from_user.id, "Admin" + ": " + msg1.text[6:])
 
 
-#@dp.message_handler()
-#async def pars(msg: types.Message):
+# @dp.message_handler()
+# async def pars(msg: types.Message):
 #    await msg.answer(msg.text)
 
 

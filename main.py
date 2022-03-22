@@ -5,6 +5,7 @@ from os import getenv
 from sys import exit
 from tokensuka import *
 
+
 bot = Bot(token=bot_token)
 userid = 0
 ban = 0
@@ -12,6 +13,8 @@ dp = Dispatcher(bot)
 chat_id = 457140523  # 463785826
 logging.basicConfig(level=logging.INFO)
 
+KB = aiogram.types.ReplyKeyboardMarkup(resize_keyboard=True)
+KB.row(aiogram.types.KeyboardButton("Связь"), aiogram.types.KeyboardButton("Связь"))
 
 @dp.message_handler(commands=["help", "start"])
 async def helpmes(message: types.Message):
@@ -34,7 +37,7 @@ async def sendTOadmin(msg1: types.Message):
     if ban == 1:
         if msg1.text == "stop":
             ban = 0
-        if msg1.from_user.id == S:
+        elif msg1.from_user.id == S:
             await bot.send_message(userid, msg1.text)
         else:
             await bot.send_message(S, msg1.text)

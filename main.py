@@ -42,13 +42,14 @@ async def sendToNahoy(msg2: types.Message):
     ban = 1
 
 
-
 @dp.message_handler()
 async def sendTOadmin(msg1: types.Message):
     global ban
     if ban == 1:
         uid = msg1.from_user.id
         await sendtodaun(msg1.text, uid)
+    elif ban == 2:
+        print(3)
 
 
 # @dp.message_handler()

@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import psycopg2
 from aiogram import Bot, Dispatcher, executor, types
 from os import getenv
 from sys import exit

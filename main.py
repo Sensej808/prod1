@@ -34,10 +34,10 @@ async def sendtodaun(msg1, uid):
     if msg1 == "Остановить":
         ban = 0
         return 0
-    elif uid == E:
+    elif uid == S:
         await bot.send_message(userid, msg1, reply_markup=KB1)
     else:
-        await bot.send_message(E, msg1, reply_markup=KB1)
+        await bot.send_message(S, msg1, reply_markup=KB1)
 
 
 @dp.message_handler()
@@ -66,8 +66,10 @@ async def process_callback(query: types.CallbackQuery):
     if data == "ans":
         back = 1
         await bot.edit_message_text(query.message.text, chat_id=query.from_user.id, message_id=query.message.message_id)
+
     elif data == "decline":
         await bot.edit_message_text(query.message.text, chat_id=query.from_user.id, message_id=query.message.message_id)
+        await query.message.answer("Переписка отменена")
         ban = 0
         back = 0
     await query.answer()

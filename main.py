@@ -34,44 +34,35 @@ async def sendtodaun(msg1, uid):
     if msg1 == "Остановить":
         ban = 0
         return 0
-    elif uid == S:
+    if uid == E:
         await bot.send_message(userid, msg1, reply_markup=KB1)
     else:
-        await bot.send_message(S, msg1, reply_markup=KB1)
+        await bot.send_message(E, msg1, reply_markup=KB1)
 
 
 @dp.message_handler()
 async def Head(msg1: types.Message):
     global ban
-    global back
-    userid = msg1.from_user.id
-    m = msg1.text
+    global userid
+
     if ban == 1:
-        if back == 0:
-            await bot.send_message(E, "@" + msg1.from_user.username.__str__() + ":" + msg1.text, reply_markup=KBansw)
-        uid = msg1.from_user.id
-        if back == 1:
-            await sendtodaun(msg1.text, uid)
+        await sendtodaun(msg1.text, msg1.from_user.id)
     if msg1.text == "Связь":
-        ban = 1
-        back = 0
+        userid = msg1.from_user.id
         await bot.send_message(userid, "Устанавливаю связь с администрацией...")
-        await bot.send_message(userid, "Напишите ваше сообщение: ")
+        await bot.send_message(E, "@" + msg1.from_user.username.__str__() + ":", reply_markup=KBansw)
 
 
 @dp.callback_query_handler()
 async def process_callback(query: types.CallbackQuery):
     data = query.data
-    global ban, back
+    global ban
     if data == "ans":
-        back = 1
-        await bot.edit_message_text(query.message.text, chat_id=query.from_user.id, message_id=query.message.message_id)
+        ban = 1
+        await bot.send_message(userid, "Вам ответила администрация")
 
     elif data == "decline":
-        await bot.edit_message_text(query.message.text, chat_id=query.from_user.id, message_id=query.message.message_id)
-        await query.message.answer("Переписка отменена")
-        ban = 0
-        back = 0
+        await bot.send_message(userid, "Администрация отклонил ващ просьба бля")
     await query.answer()
 
 

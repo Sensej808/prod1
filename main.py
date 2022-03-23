@@ -61,14 +61,17 @@ async def Head(msg1: types.Message):
 
 
 @dp.callback_query_handler()
-async def Ans(chosen_result: types.ChosenInlineResult):
-    if chosen_result.query.data == "ans":
+async def process_callback(query: types.CallbackQuery):
+    data = query.data
+    global ban, back
+    if data == "ans":
         back = 1
-    elif chosen_result.query.data == "decline":
-        global ban, back
+
+    elif data == "decline":
+
         ban = 0
         back = 0
-
+    await query.answer()
 
 # @dp.message_handler()
 # async def pars(msg: types.Message):

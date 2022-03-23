@@ -13,31 +13,12 @@ chat_id = 457140523  # 463785826
 logging.basicConfig(level=logging.INFO)
 
 KB = types.ReplyKeyboardMarkup(resize_keyboard=True)
-<<<<<<< Updated upstream
 KB.row(types.KeyboardButton("Связь"), types.KeyboardButton("Связь"))
-=======
-KB.row(types.KeyboardButton("Связь"))
-
-KB1 = types.ReplyKeyboardMarkup(row_width=1)
-KB1.row(types.KeyboardButton("Остановить"))
-
-
-def Chat(m: types.Message):
-    print(1)
-    global ban
-    if ban == 1:
-        if m.text == "stop":
-            ban = 0
-        elif m.from_user.id == S:
-            await bot.send_message(userid, m.text, reply_markup=KB1)
-        else:
-            await bot.send_message(S, m.text, reply_markup=KB1)
->>>>>>> Stashed changes
 
 
 @dp.message_handler(commands=["help", "start"])
 async def helpmes(message: types.Message):
-    await message.answer("Привет! \n Команды бота:\t /help- \t /send-", reply_markup=KB)
+    await message.answer("Привет! \n Команды бота:\t /help- \t /send-")
 
 
 async def sendtodaun(msg1, uid):
@@ -63,20 +44,11 @@ async def sendToNahoy(msg2: types.Message):
 
 
 @dp.message_handler()
-async def Head(msg1: types.Message):
-    text = msg1.text
+async def sendTOadmin(msg1: types.Message):
     global ban
-<<<<<<< Updated upstream
     if ban == 1:
         uid = msg1.from_user.id
         await sendtodaun(msg1.text, uid)
-=======
-    if (text == "Связь"):
-        ban = 1
-        await Chat(msg1)
-
-
->>>>>>> Stashed changes
 
 
 # @dp.message_handler()

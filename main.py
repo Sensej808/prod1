@@ -49,8 +49,8 @@ async def Head(msg1: types.Message):
     if ban == 1:
         await bot.send_message(S, "@" + msg1.from_user.username.__str__() + ":" + msg1.text, reply_markup=KBansw)
         uid = msg1.from_user.id
-        #if back == 1:
-            #await sendtodaun(msg1.text, uid)
+        # if back == 1:
+        # await sendtodaun(msg1.text, uid)
         if m == "Ответить" and msg1.from_user.id == S:
             back = 1
     if msg1.text == "Связь":
@@ -68,7 +68,6 @@ async def Ans(chosen_result: types.ChosenInlineResult):
         global ban, back
         ban = 0
         back = 0
-
 
 
 # @dp.message_handler()

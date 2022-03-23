@@ -56,6 +56,6 @@ async def sendTOadmin(msg1: types.Message):
 # async def pars(msg: types.Message):
 #    await msg.answer(msg.text)
 
-
+#1
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)

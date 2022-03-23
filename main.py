@@ -30,11 +30,12 @@ async def helpmes(message: types.Message):
 
 
 async def sendtodaun(msg1, uid):
-    global ban
+    global ban, back
     if msg1 == "Остановить":
         ban = 0
+        back = 0
         return 0
-    elif uid == S:
+    if uid == S:
         await bot.send_message(userid, msg1, reply_markup=KB1)
     else:
         await bot.send_message(S, msg1, reply_markup=KB1)
@@ -43,21 +44,17 @@ async def sendtodaun(msg1, uid):
 @dp.message_handler()
 async def Head(msg1: types.Message):
     global ban
-    global back
-    userid = msg1.from_user.id
-    m = msg1.text
+    global userid, back
 
+    if back == 1 and ban != 1:
+        ban = 1
 
     if ban == 1:
-        await bot.send_message(S, "@" + msg1.from_user.username.__str__() + ":" + msg1.text, reply_markup=KBansw)
-        uid = msg1.from_user.id
-        if back == 1:
-            await sendtodaun(msg1.text, uid)
+        await sendtodaun(msg1.text, msg1.from_user.id)
     if msg1.text == "Связь":
-        ban = 1
-        back = 0
+        userid = msg1.from_user.id
         await bot.send_message(userid, "Устанавливаю связь с администрацией...")
-        await bot.send_message(userid, "Напишите ваше сообщение: ")
+        await bot.send_message(S, "@" + msg1.from_user.username.__str__() + ":", reply_markup=KBansw)
 
 
 @dp.callback_query_handler()
@@ -66,12 +63,13 @@ async def process_callback(query: types.CallbackQuery):
     global ban, back
     if data == "ans":
         back = 1
+        await bot.send_message(userid, "Вам ответила администрация")
 
     elif data == "decline":
-
         ban = 0
         back = 0
     await query.answer()
+
 
 # @dp.message_handler()
 # async def pars(msg: types.Message):

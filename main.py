@@ -13,12 +13,14 @@ chat_id = 457140523  # 463785826
 logging.basicConfig(level=logging.INFO)
 
 KB = types.ReplyKeyboardMarkup(resize_keyboard=True)
-KB.row(types.KeyboardButton("Связь"), types.KeyboardButton("Связь"))
+KB.row(types.KeyboardButton("Связь"))
 
+KB1 = types.ReplyKeyboardMarkup(resize_keyboard=True)
+KB1.row(types.KeyboardButton("Остановить"))
 
 @dp.message_handler(commands=["help", "start"])
 async def helpmes(message: types.Message):
-    await message.answer("Привет! \n Команды бота:\t /help- \t /send-")
+    await message.answer("Привет! \n Команды бота:\t /help- \t /send-", reply_markup=KB)
 
 
 async def sendtodaun(msg1, uid):
@@ -27,9 +29,9 @@ async def sendtodaun(msg1, uid):
         ban = 0
         return 0
     elif uid == S:
-        await bot.send_message(userid, msg1)
+        await bot.send_message(userid, msg1, reply_markup=KB1)
     else:
-        await bot.send_message(S, msg1)
+        await bot.send_message(S, msg1, reply_markup=KB1)
 
 
 @dp.message_handler(commands=["send"])

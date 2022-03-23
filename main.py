@@ -46,13 +46,13 @@ async def Head(msg1: types.Message):
     global back
     userid = msg1.from_user.id
     m = msg1.text
+
+
     if ban == 1:
         await bot.send_message(S, "@" + msg1.from_user.username.__str__() + ":" + msg1.text, reply_markup=KBansw)
         uid = msg1.from_user.id
-        # if back == 1:
-        # await sendtodaun(msg1.text, uid)
-        if m == "Ответить" and msg1.from_user.id == S:
-            back = 1
+        if back == 1:
+            await sendtodaun(msg1.text, uid)
     if msg1.text == "Связь":
         ban = 1
         back = 0
@@ -63,7 +63,7 @@ async def Head(msg1: types.Message):
 @dp.callback_query_handler()
 async def Ans(chosen_result: types.ChosenInlineResult):
     if chosen_result.query.data == "ans":
-        await sendtodaun(msg1.text, chosen_result.from_user.id)
+        back = 1
     elif chosen_result.query.data == "decline":
         global ban, back
         ban = 0

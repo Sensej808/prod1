@@ -5,6 +5,7 @@ from os import getenv
 from sys import exit
 from tokensuka import *
 
+Admin = S
 bot = Bot(token=bot_token)
 userid = 0
 ban = 0
@@ -33,11 +34,13 @@ async def sendtodaun(msg1, uid):
     global ban
     if msg1 == "Остановить":
         ban = 0
+        await bot.send_message(userid, "Диалог завершён", reply_markup=KB)
+        await bot.send_message(Admin, "Диалог завершён", reply_markup=KB)
         return 0
-    if uid == E:
+    if uid == Admin:
         await bot.send_message(userid, msg1, reply_markup=KB1)
     else:
-        await bot.send_message(E, msg1, reply_markup=KB1)
+        await bot.send_message(Admin, msg1, reply_markup=KB1)
 
 
 @dp.message_handler()
@@ -45,12 +48,15 @@ async def Head(msg1: types.Message):
     global ban
     global userid
 
+
     if ban == 1:
         await sendtodaun(msg1.text, msg1.from_user.id)
     if msg1.text == "Связь":
         userid = msg1.from_user.id
         await bot.send_message(userid, "Устанавливаю связь с администрацией...")
-        await bot.send_message(E, "@" + msg1.from_user.username.__str__() + ":", reply_markup=KBansw)
+        #await bot.send_message(userid, "Напишите свой вопрос:")
+        await bot.send_message(Admin, "@" + msg1.from_user.username.__str__() + ":", reply_markup=KBansw)
+
 
 
 @dp.callback_query_handler()
@@ -59,9 +65,11 @@ async def process_callback(query: types.CallbackQuery):
     global ban
     if data == "ans":
         ban = 1
-        await bot.send_message(userid, "Вам ответила администрация")
+        await bot.edit_message_text("Диалог с " + query.message.text, chat_id=query.message.chat.id, message_id=query.message.message_id)
+        await bot.send_message(userid, "Вам ответила администрация", reply_markup=KB1)
 
     elif data == "decline":
+        await bot.edit_message_text(query.message.text, chat_id=query.message.chat.id, message_id=query.message.message_id)
         await bot.send_message(userid, "Администрация отклонил ващ просьба бля")
     await query.answer()
 

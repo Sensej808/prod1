@@ -34,7 +34,7 @@ async def sendtodaun(msg1, uid):
     if msg1 == "Остановить":
         ban = 0
         await bot.send_message(userid, "Диалог завершён", reply_markup=KB)
-        await bot.send_message(Admin, "Диалог завершён", reply_markup=KB)
+        await bot.send_message(Admin, "Диалог завершён")
         return 0
     if uid == Admin:
         await bot.send_message(userid, msg1, reply_markup=KB1)

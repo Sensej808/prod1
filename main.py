@@ -6,13 +6,11 @@ from sys import exit
 from tokensuka import *
 
 temp = False
-Admin = S
+Admin = E
 bot = Bot(token=bot_token)
 userid = 0
 ban = 0
-back = 0
 dp = Dispatcher(bot)
-chat_id = 457140523  # 463785826
 logging.basicConfig(level=logging.INFO)
 
 KB = types.ReplyKeyboardMarkup(resize_keyboard=True)

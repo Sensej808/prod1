@@ -1,12 +1,14 @@
-import psycopg2
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 from os import getenv
 from sys import exit
 from tokensuka import *
+from collections import deque
 from config import *
+import psycopg2
 
+q = deque()
 bot = Bot(token=bot_token)
 dp = Dispatcher(bot)
 logging.basicConfig(level=logging.INFO)
@@ -26,7 +28,10 @@ connection = psycopg2.connect(
 connection.autocommit = True
 
 KB = types.ReplyKeyboardMarkup(resize_keyboard=True)
-KB.row(types.KeyboardButton("Связь"))
+KB.row(types.KeyboardButton("Связь📲"), types.KeyboardButton("Предложка💾"))
+
+KBAdm = types.ReplyKeyboardMarkup(resize_keyboard=True)
+KBAdm.row(types.KeyboardButton("Заявки на связь📲"), types.KeyboardButton("Читать предложку💾"))
 
 KB1 = types.ReplyKeyboardMarkup(resize_keyboard=True)
 KB1.row(types.KeyboardButton("Остановить"))
@@ -38,7 +43,10 @@ KBansw.row(types.InlineKeyboardButton("Ответить", callback_data="ans"),
 
 @dp.message_handler(commands=["help", "start"])
 async def helpmes(message: types.Message):
-    await message.answer("Привет! \n Команды бота:\t /help- ", reply_markup=KB)
+    if message.from_user.id != Admin:
+        await message.answer("Привет! \n Команды бота:\t /help - список команд бота \n \"Связь\" - Написать администрации \n \"Предложка\" - предложить запись", reply_markup=KB)
+    else:
+        await message.answer("Привет! \n Команды бота:\t /help- ", reply_markup=KBAdm)
 
 
 async def sendtodaun(msg1, uid):
@@ -46,7 +54,7 @@ async def sendtodaun(msg1, uid):
     if msg1 == "Остановить":
         ban = 0
         await bot.send_message(userid, "Диалог завершён", reply_markup=KB)
-        await bot.send_message(Admin, "Диалог завершён")
+        await bot.send_message(Admin, "Диалог завершён", reply_markup=KBAdm)
         return 0
     if uid == Admin:
         await bot.send_message(userid, msg1, reply_markup=KB1)
@@ -66,17 +74,21 @@ async def Head(msg1: types.Message):
     if temp:
         temp = not temp
         await bot.send_message(Admin, "@" + msg1.from_user.username.__str__() + ": " + msg1.text, reply_markup=KBansw)
-
-    if msg1.text == "Связь" or temp:
+    
+    if msg1.text == "Связь📲" or temp:
         temp = not temp
         userid = msg1.from_user.id
         await bot.send_message(userid, "Устанавливаю связь с администрацией...")
         await bot.send_message(userid, "Напишите свой вопрос:")
-    if msg1.text == "Предложка":
+
+        # await bot.send_message(Admin, "@" + msg1.from_user.username.__str__() + ":", reply_markup=KBansw)
+    if msg1.text == "Предложка💾":
+        await bot.send_message(userid, "Отправьте ссылку на мангу:")
+    if msg1.text == "Предложка💾":
         userid = msg1.from_user.id
         await bot.send_message(userid, "Предлагай. Одним предложением.")
         ban = 2
-    if ban == 2 and msg1.text != "Предложка":
+    if ban == 2 and msg1.text != "Предложка💾":
         with connection.cursor() as cursor:
             cursor.execute(
                 f"""INSERT INTO offers (num, read, id, name, offer) VALUES
@@ -119,5 +131,21 @@ async def process_callback(query: types.CallbackQuery):
     await query.answer()
 
 
+# @dp.message_handler()
+# async def pars(msg: types.Message):
+#    await msg.answer(msg.text)
+
+
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
+
+    '''
+    @dp.message_handler(commands=["send"])
+    async def sendToNahoy(msg2: types.Message):
+    global userid
+    global ban
+    userid = msg2.from_user.id
+    await bot.send_message(userid, "Устанавливаю связь с администрацией...")
+    await bot.send_message(S, "Ало, ну как там с чат ботом")
+    ban = 1
+    '''

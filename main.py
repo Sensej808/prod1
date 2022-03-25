@@ -1,17 +1,29 @@
+import psycopg2
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 from os import getenv
 from sys import exit
 from tokensuka import *
+from config import *
 
-temp = False
-Admin = E
 bot = Bot(token=bot_token)
-userid = 0
-ban = 0
 dp = Dispatcher(bot)
 logging.basicConfig(level=logging.INFO)
+num = 0
+num1 = 0
+temp = False
+Admin = E
+userid = 0
+ban = 0
+
+connection = psycopg2.connect(
+    host=host,
+    user=user,
+    password=password,
+    database=db_name
+)
+connection.autocommit = True
 
 KB = types.ReplyKeyboardMarkup(resize_keyboard=True)
 KB.row(types.KeyboardButton("Связь"))
@@ -47,20 +59,47 @@ async def Head(msg1: types.Message):
     global ban
     global userid
     global temp
-
+    global num, num1
     if ban == 1:
         await sendtodaun(msg1.text, msg1.from_user.id)
 
     if temp:
         temp = not temp
         await bot.send_message(Admin, "@" + msg1.from_user.username.__str__() + ": " + msg1.text, reply_markup=KBansw)
-    
+
     if msg1.text == "Связь" or temp:
         temp = not temp
         userid = msg1.from_user.id
         await bot.send_message(userid, "Устанавливаю связь с администрацией...")
         await bot.send_message(userid, "Напишите свой вопрос:")
-        # await bot.send_message(Admin, "@" + msg1.from_user.username.__str__() + ":", reply_markup=KBansw)
+    if msg1.text == "Предложка":
+        userid = msg1.from_user.id
+        await bot.send_message(userid, "Предлагай. Одним предложением.")
+        ban = 2
+    if ban == 2 and msg1.text != "Предложка":
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f"""INSERT INTO offers (num, read, id, name, offer) VALUES
+                ({num}, 0, {msg1.from_user.id}, '{msg1.from_user.username.__str__()}', '{msg1.text}');"""
+            )
+            num += 1
+            ban = 0
+    if msg1.from_user.id == Admin and msg1.text == "ЧекПредл":
+        num1 = num
+        with connection.cursor() as cursor:
+            # cursor.execute(
+            #     f"""SELECT offer FROM offers WHERE read = {0} and num < {num};"""
+            # )
+            # print(cursor.fetchone())
+            # while cursor.fetchone() != None:
+            cursor.execute(
+                f"""SELECT offer FROM offers WHERE num < {num};"""
+            )
+            await bot.send_message(Admin, cursor.fetchone())
+            cursor.execute(
+                """UPDATE offers SET read = 1;"""
+            )
+            num1 += 1
 
 
 @dp.callback_query_handler()
@@ -80,21 +119,5 @@ async def process_callback(query: types.CallbackQuery):
     await query.answer()
 
 
-# @dp.message_handler()
-# async def pars(msg: types.Message):
-#    await msg.answer(msg.text)
-
-
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
-
-    '''
-    @dp.message_handler(commands=["send"])
-    async def sendToNahoy(msg2: types.Message):
-    global userid
-    global ban
-    userid = msg2.from_user.id
-    await bot.send_message(userid, "Устанавливаю связь с администрацией...")
-    await bot.send_message(S, "Ало, ну как там с чат ботом")
-    ban = 1
-    '''
